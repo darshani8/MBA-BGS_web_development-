@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Campus Gallery | BGSCET MBA Bengaluru</title>
+<meta name="description" content="Explore life at BGSCET MBA — campus, cultural fests, library, guest lectures, sports and convocation. Filter the gallery by category."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<link rel="stylesheet" href="home.css"/>
+<link rel="stylesheet" href="pages.css"/>
+<style>
+  .gal-page{background:var(--bg)}
+  .gal-filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 36px}
+  .gal-filters button{font-family:inherit;font-weight:700;font-size:14px;padding:10px 18px;border-radius:var(--pill);border:1.5px solid var(--line-2);background:#fff;color:var(--t-2);cursor:pointer;transition:.22s}
+  .gal-filters button:hover{border-color:var(--purple)}
+  .gal-filters button.active{background:var(--grad-soft);color:#fff;border-color:transparent}
+  .gal-filters button .n{opacity:.7;font-weight:600;margin-left:2px}
+
+  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .gtile{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;cursor:pointer;border:1px solid var(--line);
+    background:#fff;box-shadow:var(--sh-sm);transition:transform .3s,box-shadow .3s;animation:gpop .4s both}
+  .gtile.feat{grid-column:span 2;aspect-ratio:8/3}
+  .gtile:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+  .gtile img,.gtile .ph{width:100%;height:100%;object-fit:cover}
+  .gtile .gcap{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+    padding:16px 16px 14px;color:#fff;font-weight:700;font-size:14.5px;line-height:1.25;
+    background:linear-gradient(transparent,rgba(26,17,48,.82));opacity:0;transform:translateY(10px);transition:.3s}
+  .gtile:hover .gcap{opacity:1;transform:none}
+  .gtile .gcat{flex:none;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;
+    padding:4px 9px;border-radius:var(--pill);background:rgba(255,255,255,.18);backdrop-filter:blur(4px)}
+  .gtile .zoom{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(255,255,255,.9);color:var(--purple-700);opacity:0;transform:scale(.8);transition:.25s;box-shadow:var(--sh-sm)}
+  .gtile:hover .zoom{opacity:1;transform:none}
+  @keyframes gpop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .gal-empty{text-align:center;color:var(--t-3);font-weight:600;padding:60px 0;display:none}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:24px}
+  .lb.open{display:flex}
+  .lb-veil{position:absolute;inset:0;background:rgba(20,12,38,.86);backdrop-filter:blur(6px)}
+  .lb-stage{position:relative;z-index:1;width:min(960px,92vw);max-height:88vh;display:flex;flex-direction:column;
+    background:#fff;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:gpop .35s both}
+  .lb-media{position:relative;aspect-ratio:16/10;background:#1a1130}
+  .lb-media img,.lb-media .ph{width:100%;height:100%;object-fit:cover}
+  .lb-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;background:#fff}
+  .lb-bar b{font-family:var(--font-display);font-size:18px;color:var(--navy);font-weight:800}
+  .lb-bar .lbcat{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--magenta)}
+  .lb-count{font-size:13px;color:var(--t-3);font-weight:700}
+  .lb-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(255,255,255,.92);color:var(--purple-700);display:grid;place-items:center;box-shadow:var(--sh-md);transition:.2s;z-index:2}
+  .lb-btn:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+  .lb-prev{left:16px}.lb-next{right:16px}
+  .lb-close{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer;z-index:3;
+    background:rgba(255,255,255,.92);color:var(--purple-700);display:grid;place-items:center;box-shadow:var(--sh-md);transition:.2s}
+  .lb-close:hover{background:#fff;transform:rotate(90deg)}
+  @media (max-width:640px){
+    .gtile.feat{grid-column:span 1;aspect-ratio:4/3}
+    .lb-btn{width:40px;height:40px}
+  }
+</style>
+</head>
+<body>
+
+<div class="util">
+  <div class="shell">
+    <div class="util-left">
+      <span class="dot"></span>
+      <span class="long">BGSKH Education Trust (R.) · Unit of Sri Adichunchanagiri Shikshana Trust (R.)</span>
+    </div>
+    <nav class="util-right" aria-label="utility">
+      <a href="tel:+917676637525">+91 7676637525, +919845099083</a>
+      <a href="mailto:mbainfo@bgscet.ac.in">mbainfo@bgscet.ac.in</a>
+    </nav>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="shell">
+    <a href="index.html" class="brand" aria-label="BGSCET MBA home"><img width="200" height="230" class="crest" src="assets/logo-shield-trim.png" alt="BGSCET MBA crest"/><img width="500" height="60" class="wm" src="assets/logo-wordmark-only.png" alt="BGSCET MBA"/></a>
+    <nav class="nav-links" aria-label="primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="people.html">People</a>
+      <div class="nav-dd">
+        <a class="nav-dd-btn" href="programs.html" aria-haspopup="true">Programs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></a>
+        <div class="nav-dd-menu" role="menu">
+          <a href="programs.html" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Programs Overview</a>
+          <a href="programs.html#admissions" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13l2 2 4-4"/></svg>Admissions</a>
+          <a href="journey.html" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg>The Journey</a>
+        </div>
+      </div>
+      <a href="blog.html">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost btn-sm">Login<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
+      <a href="contact.html" class="btn btn-primary btn-sm apply-key">Contact Us<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a>
+      <button class="nav-toggle" aria-label="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" aria-hidden="true">
+  <div class="drawer-veil"></div>
+  <div class="drawer-panel">
+    <div class="d-head"><img width="500" height="95" src="assets/logo-wordmark-trim.png" alt="BGSCET MBA" style="height:24px"/><button class="drawer-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="people.html">People</a><a href="programs.html">Programs</a><a href="programs.html#admissions">Admissions</a><a href="journey.html">The Journey</a><a href="blog.html">Blog</a><a href="gallery.html">Campus Gallery</a>
+    <div class="d-cta"><a href="login.html" class="btn btn-ghost">Login</a><a href="contact.html" class="btn btn-primary">Contact Us</a></div>
+  </div>
+</div>
+
+<div class="ticker" role="region" aria-label="announcements">
+  <div class="ticker-track"><div class="grp">
+      <span class="ticker-item"><span class="pip"></span><b>Admissions Open for 2026–27</b> · Apply now for MBA</span>
+      <span class="ticker-item"><span class="sep">◆</span> 50% fee concession on first 45 Seats till June 30th — Call Now</span>
+      <span class="ticker-item"><span class="sep">◆</span> Early-bird scholarships up to ₹1,00,000 closing soon</span>
+      <span class="ticker-item"><span class="sep">◆</span> 100% placement assistance · 180+ recruiting partners</span>
+      <span class="ticker-item"><span class="sep">◆</span> Approved by AICTE · Affiliated to VTU, Belagavi</span>
+      <span class="ticker-item"><span class="sep">◆</span> Campus tours every Saturday · Book your visit</span>
+    </div></div>
+</div>
+
+<section class="page-hero">
+  <div class="shell">
+    <nav class="crumbs"><a href="index.html">Home</a><span class="sep">/</span><span>Campus Gallery</span></nav>
+    <h1>Life at BGSCET, in pictures</h1>
+    <p>A vibrant campus where learning, culture, sport and friendships come together. Pick a category to explore — every tile opens full-size.</p>
+  </div>
+</section>
+
+<section class="section gal-page">
+  <div class="shell">
+    <div class="gal-filters" id="galFilters">
+      <button data-filter="all" class="active">All</button>
+      <button data-filter="campus">Campus</button>
+      <button data-filter="cultural">Cultural Fests</button>
+      <button data-filter="library">Library</button>
+      <button data-filter="lectures">Guest Lectures</button>
+      <button data-filter="sports">Sports</button>
+      <button data-filter="convocation">Convocation</button>
+      <button data-filter="industry">Industry Visits</button>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <a class="gtile feat" data-cat="campus" data-title="Our Mahalakshmipuram campus"><img width="1024" height="683" src="assets/campus-building.webp" alt="BGSCET campus building"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Our Mahalakshmipuram campus<span class="gcat">Campus</span></span></a>
+      <a class="gtile" data-cat="campus" data-title="Campus entrance &amp; arch"><div class="ph" data-label="Campus entrance"></div><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Campus entrance &amp; arch<span class="gcat">Campus</span></span></a>
+      <a class="gtile" data-cat="campus" data-title="Central atrium &amp; quad"><div class="ph" data-label="Atrium / quad"></div><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Central atrium &amp; quad<span class="gcat">Campus</span></span></a>
+
+      <a class="gtile feat" data-cat="cultural" data-title="Varnika 2.0 — flash mob"><img width="1100" height="733" src="assets/fest/f2.webp" alt="Varnika 2.0 flash mob performance" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Varnika 2.0 — flash mob<span class="gcat">Cultural</span></span></a>
+      <a class="gtile" data-cat="cultural" data-title="Varnika 2.0 — on stage"><img width="1100" height="733" src="assets/fest/f3.webp" alt="Varnika 2.0 ice-breakers on stage" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Varnika 2.0 — on stage<span class="gcat">Cultural</span></span></a>
+      <a class="gtile" data-cat="cultural" data-title="Varnika 2.0 photo booth"><img width="1100" height="733" src="assets/fest/f5.webp" alt="Students at the Varnika 2.0 photo booth" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Varnika 2.0 photo booth<span class="gcat">Cultural</span></span></a>
+      <a class="gtile" data-cat="cultural" data-title="The volunteer team"><img width="1100" height="733" src="assets/fest/f6.webp" alt="Varnika 2.0 volunteer team" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">The volunteer team<span class="gcat">Cultural</span></span></a>
+      <a class="gtile" data-cat="cultural" data-title="A packed auditorium"><img width="1100" height="733" src="assets/fest/f4.webp" alt="Packed auditorium at the fest" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">A packed auditorium<span class="gcat">Cultural</span></span></a>
+      <a class="gtile" data-cat="cultural" data-title="Festive campus entrance"><img width="1100" height="619" src="assets/fest/f1.webp" alt="Festive BGSCET campus entrance" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Festive campus entrance<span class="gcat">Cultural</span></span></a>
+
+      <a class="gtile feat" data-cat="library" data-title="Learning resource centre"><img width="1100" height="734" src="assets/library/l1.webp" alt="BGSCET library resource centre" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Learning resource centre<span class="gcat">Library</span></span></a>
+      <a class="gtile" data-cat="library" data-title="Group study session"><img width="1100" height="825" src="assets/library/l2.webp" alt="Students in a group study session" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Group study session<span class="gcat">Library</span></span></a>
+      <a class="gtile" data-cat="library" data-title="Quiet reading area"><img width="1100" height="825" src="assets/library/l3.webp" alt="Students studying in the reading area" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Quiet reading area<span class="gcat">Library</span></span></a>
+
+      <a class="gtile" data-cat="lectures" data-title="Design thinking workshop"><img width="1100" height="825" src="assets/seminar/s1.webp" alt="Design thinking workshop" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Design thinking workshop<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="Expert guest lecture"><img width="1100" height="825" src="assets/seminar/s2.webp" alt="Expert guest lecture" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Expert guest lecture<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="MBA orientation session"><img width="1100" height="825" src="assets/seminar/s3.webp" alt="MBA orientation session" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">MBA orientation session<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="Interactive seminar"><img width="1100" height="825" src="assets/seminar/s4.webp" alt="Interactive seminar" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Interactive seminar<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="Faculty-led seminar"><img width="1100" height="825" src="assets/seminar/s5.webp" alt="Faculty-led seminar" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Faculty-led seminar<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="Branding &amp; reputation talk"><img width="1100" height="825" src="assets/seminar/s6.webp" alt="Branding and reputation talk" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Branding &amp; reputation talk<span class="gcat">Lectures</span></span></a>
+      <a class="gtile" data-cat="lectures" data-title="Financial literacy seminar"><img width="1100" height="825" src="assets/seminar/s7.webp" alt="Financial literacy seminar" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Financial literacy seminar<span class="gcat">Lectures</span></span></a>
+
+      <a class="gtile feat" data-cat="sports" data-title="Volleyball on court"><img width="1100" height="825" src="assets/sports/sp1.webp" alt="Students playing volleyball on campus court" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Volleyball on court<span class="gcat">Sports</span></span></a>
+      <a class="gtile" data-cat="sports" data-title="Indoor badminton"><img width="1100" height="825" src="assets/sports/sp3.webp" alt="Indoor badminton match" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Indoor badminton<span class="gcat">Sports</span></span></a>
+      <a class="gtile" data-cat="sports" data-title="Volleyball practice"><img width="1100" height="825" src="assets/sports/sp4.webp" alt="Volleyball practice on court" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Volleyball practice<span class="gcat">Sports</span></span></a>
+      <a class="gtile" data-cat="sports" data-title="Sports day spirit"><img width="1100" height="825" src="assets/sports/sp2.webp" alt="Students at the sports meet" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Sports day spirit<span class="gcat">Sports</span></span></a>
+
+      <a class="gtile feat" data-cat="convocation" data-title="Vibhava — Cohort of 2023–25"><img width="1100" height="733" src="assets/convocation/c5.webp" alt="Vibhava graduation — Cohort of 2023-25" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Vibhava — Cohort of 2023–25<span class="gcat">Convocation</span></span></a>
+      <a class="gtile" data-cat="convocation" data-title="Blessings from Sri Gurudev"><img width="1100" height="734" src="assets/convocation/c6.webp" alt="Sri Gurudev on the dais" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Blessings from Sri Gurudev<span class="gcat">Convocation</span></span></a>
+      <a class="gtile" data-cat="convocation" data-title="On the Vibhava stage"><img width="1100" height="733" src="assets/convocation/c3.webp" alt="Student felicitated on the Vibhava stage" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">On the Vibhava stage<span class="gcat">Convocation</span></span></a>
+      <a class="gtile" data-cat="convocation" data-title="Felicitation ceremony"><img width="1100" height="733" src="assets/convocation/c1.webp" alt="Felicitation ceremony" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Felicitation ceremony<span class="gcat">Convocation</span></span></a>
+      <a class="gtile" data-cat="convocation" data-title="Graduation send-off"><img width="1100" height="733" src="assets/convocation/c2.webp" alt="Graduation send-off" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Graduation send-off<span class="gcat">Convocation</span></span></a>
+      <a class="gtile" data-cat="convocation" data-title="Student felicitation"><img width="1100" height="733" src="assets/convocation/c4.webp" alt="Student felicitation" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Student felicitation<span class="gcat">Convocation</span></span></a>
+
+      <a class="gtile feat" data-cat="industry" data-title="Industrial visit to FESTO — automation &amp; pneumatics"><img width="1100" height="508" src="assets/visits/festo.webp" alt="MBA industrial visit to FESTO" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">FESTO — automation &amp; pneumatics<span class="gcat">Industry</span></span></a>
+      <a class="gtile feat" data-cat="industry" data-title="Industrial visit to ABB — electrification &amp; robotics"><img width="1100" height="620" src="assets/visits/abb.webp" alt="MBA industrial visit to ABB" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">ABB — electrification &amp; robotics<span class="gcat">Industry</span></span></a>
+      <a class="gtile" data-cat="industry" data-title="Industrial visit to Dairy Day ice cream plant"><img width="1100" height="508" src="assets/visits/dairy-day.webp" alt="MBA visit to Dairy Day ice cream plant" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Dairy Day — ice cream plant<span class="gcat">Industry</span></span></a>
+      <a class="gtile" data-cat="industry" data-title="Visit to Karnataka Soaps &amp; Detergents Ltd"><img width="1100" height="495" src="assets/visits/ksdl.webp" alt="MBA visit to Karnataka Soaps and Detergents" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Karnataka Soaps &amp; Detergents<span class="gcat">Industry</span></span></a>
+      <a class="gtile" data-cat="industry" data-title="Agri-business field study"><img width="1100" height="825" src="assets/visits/agri-field.webp" alt="MBA agri-business field study" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Agri-business field study<span class="gcat">Industry</span></span></a>
+      <a class="gtile" data-cat="industry" data-title="Industrial outreach visit"><img width="1100" height="826" src="assets/visits/outreach.webp" alt="MBA industrial outreach visit" loading="lazy"/><span class="zoom"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4M11 8v6M8 11h6"/></svg></span><span class="gcap">Industrial outreach visit<span class="gcat">Industry</span></span></a>
+    </div>
+    <p class="gal-empty" id="galEmpty">No photos in this category yet — check back soon.</p>
+  </div>
+</section>
+
+<section class="ctaband">
+  <div class="shell">
+    <div><h2>See it for yourself.</h2><p>Pictures only go so far — book a campus visit and experience BGSCET in person.</p></div>
+    <div class="hero-actions" style="margin:0"><a href="contact.html" class="btn btn-ghost btn-lg">Book a Campus Visit<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a><a href="admissions.html" class="btn btn-on-dark btn-lg">Apply Now</a></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-top">
+      <div class="f-brand"><img width="500" height="95" src="assets/logo-wordmark-trim.png" alt="BGSCET MBA"/><p>BGSKH Education Trust (R.) — a unit of Sri Adichunchanagiri Shikshana Trust (R.). Building leaders through Knowledge Mastery and Personality Growth.</p><div class="f-approve"><span>AICTE Approved</span><span>VTU Affiliated</span></div>
+        <div class="f-social"><a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v7h3v-7h2.5l.5-3H14V9z"/></svg></a><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a><a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 7A1.94 1.94 0 105 5.06 1.94 1.94 0 006.94 7zM5.5 9h2.9v9.5H5.5zM10 9h2.8v1.3h.04a3.07 3.07 0 012.76-1.52c2.95 0 3.5 1.94 3.5 4.46v5.26h-2.9v-4.66c0-1.11 0-2.54-1.55-2.54s-1.78 1.21-1.78 2.46v4.74H10z"/></svg></a><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.2a3 3 0 00-2.1-2.1C18 5.5 12 5.5 12 5.5s-6 0-7.9.6A3 3 0 002 8.2 31 31 0 002 12a31 31 0 00.1 3.8A3 3 0 004.1 18c1.9.5 7.9.5 7.9.5s6 0 7.9-.6a3 3 0 002.1-2.1A31 31 0 0022 12a31 31 0 00-.1-3.8zM10 15V9l5 3z"/></svg></a></div>
+      </div>
+      <div><h4>Quick Links</h4><ul><li><a href="about.html">About Us</a></li><li><a href="people.html">People</a></li><li><a href="programs.html">Programs</a></li><li><a href="admissions.html">Admissions</a></li><li><a href="gallery.html">Campus Gallery</a></li></ul></div>
+      <div><h4>Resources</h4><ul><li><a href="blog.html">Blog &amp; News</a></li><li><a href="sitemap.html">Sitemap</a></li><li><a href="#">Download Brochure</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+      <div><h4>Reach Us</h4><ul class="f-contact"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.7-7-11a7 7 0 0114 0c0 5.3-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>CA Site No. 6 &amp; 7, 3rd Main, Pipeline Road, Chord Rd, adj. to Mahalakshmi Metro Station, 2nd Phase, Stage 2, Mahalakshmipuram, Bengaluru, Karnataka 560086</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3-8.6A2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.4-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg><a href="tel:+917676637525">+91 7676637525, +919845099083</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:mbainfo@bgscet.ac.in">mbainfo@bgscet.ac.in</a></li></ul></div>
+    </div>
+    <div class="footer-gurudev"><img width="284" height="55" src="assets/jai-sri-gurudev.png" alt="Jai Sri Gurudev"/></div>
+    <div class="footer-bottom"><span>© <span data-year>2026</span> BGSCET MBA. All rights reserved.</span><nav class="f-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-use.html">Terms of Use</a><a href="sitemap.html">Sitemap</a></nav></div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
+  <div class="lb-veil" data-close></div>
+  <div class="lb-stage">
+    <button class="lb-close" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="lb-media" id="lbMedia"></div>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+    <div class="lb-bar"><div><span class="lbcat" id="lbCat"></span><br/><b id="lbTitle"></b></div><span class="lb-count" id="lbCount"></span></div>
+  </div>
+</div>
+
+<a class="brochure-fab" href="#" aria-label="Download Brochure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Download Brochure</a>
+<script src="site.js"></script>
+<script>
+(function(){
+  var grid=document.getElementById('galleryGrid');
+  var tiles=[].slice.call(grid.querySelectorAll('.gtile'));
+  var btns=[].slice.call(document.querySelectorAll('#galFilters button'));
+  var empty=document.getElementById('galEmpty');
+  var current='all';
+
+  // counts per category
+  btns.forEach(function(b){
+    var f=b.getAttribute('data-filter');
+    var n=(f==='all')?tiles.length:tiles.filter(function(t){return t.getAttribute('data-cat')===f;}).length;
+    var s=document.createElement('span');s.className='n';s.textContent=' '+n;b.appendChild(s);
+  });
+
+  function apply(cat,push){
+    current=cat;
+    var visible=0,delay=0;
+    tiles.forEach(function(t){
+      var show=(cat==='all'||t.getAttribute('data-cat')===cat);
+      if(show){t.style.display='';t.style.animationDelay=(delay*0.04)+'s';delay++;visible++;}
+      else{t.style.display='none';}
+    });
+    btns.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-filter')===cat);});
+    empty.style.display=visible?'none':'block';
+    // sync url (without reload)
+    if(push){
+      var url=cat==='all'?location.pathname:location.pathname+'?category='+cat;
+      history.replaceState(null,'',url);
+    }
+  }
+
+  btns.forEach(function(b){b.addEventListener('click',function(){apply(b.getAttribute('data-filter'),true);});});
+
+  // initial category from query
+  var q=new URLSearchParams(location.search).get('category');
+  var valid=btns.some(function(b){return b.getAttribute('data-filter')===q;});
+  apply(valid?q:'all',false);
+
+  /* ---- lightbox ---- */
+  var lb=document.getElementById('lightbox');
+  var lbMedia=document.getElementById('lbMedia');
+  var lbTitle=document.getElementById('lbTitle');
+  var lbCat=document.getElementById('lbCat');
+  var lbCount=document.getElementById('lbCount');
+  var idx=0;
+
+  function visibleTiles(){return tiles.filter(function(t){return t.style.display!=='none';});}
+
+  function render(){
+    var list=visibleTiles();
+    if(!list.length)return;
+    idx=(idx+list.length)%list.length;
+    var t=list[idx];
+    var media=t.querySelector('img')?('<img src="'+t.querySelector('img').getAttribute('src')+'" alt="">'):('<div class="ph" data-label="'+t.querySelector('.ph').getAttribute('data-label')+'"></div>');
+    lbMedia.innerHTML=media;
+    lbTitle.textContent=t.getAttribute('data-title');
+    lbCat.textContent=t.querySelector('.gcat').textContent;
+    lbCount.textContent=(idx+1)+' / '+list.length;
+  }
+  function open(t){
+    var list=visibleTiles();idx=list.indexOf(t);if(idx<0)idx=0;
+    render();lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  }
+  function close(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+
+  tiles.forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();open(t);});});
+  document.getElementById('lbPrev').addEventListener('click',function(){idx--;render();});
+  document.getElementById('lbNext').addEventListener('click',function(){idx++;render();});
+  lb.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',close);});
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    else if(e.key==='ArrowLeft'){idx--;render();}
+    else if(e.key==='ArrowRight'){idx++;render();}
+  });
+})();
+</script>
+</body>
+</html>
