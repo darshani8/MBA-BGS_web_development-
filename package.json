@@ -1,0 +1,16 @@
+{
+  "name": "bgscet-mba-react",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BGSCET MBA website — Next.js (App Router, static export) rebuild",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}
