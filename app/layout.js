@@ -3,13 +3,6 @@ import '../styles/home.css';
 import '../styles/pages.css';
 import '../styles/journey.css';
 
-import UtilBar from './components/UtilBar';
-import Nav from './components/Nav';
-import Ticker from './components/Ticker';
-import Footer from './components/Footer';
-import BrochureFab from './components/BrochureFab';
-import SiteScripts from './components/SiteScripts';
-
 export const metadata = {
   title: 'BGSCET | MBA — Create, Enrich, Transform · Bengaluru',
   description:
@@ -27,15 +20,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>
-        <UtilBar />
-        <Nav />
-        <Ticker />
-        {children}
-        <Footer />
-        <BrochureFab />
-        <SiteScripts />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

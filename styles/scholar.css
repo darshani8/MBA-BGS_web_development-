@@ -1,0 +1,242 @@
+/* ============================================================
+   Standalone academic portfolio — Dr. Naveen Kumar G
+   Scoped under .scholar-site so nothing leaks into the main site.
+   Reuses the brand tokens from styles.css (--purple, --magenta,
+   --font-display, --font-sans, --shell, etc.).
+   ============================================================ */
+
+.scholar-site {
+  font-family: var(--font-sans);
+  color: var(--t-1);
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- header ---- */
+.scholar-site .sch-header {
+  background: var(--purple);
+  color: #fff;
+}
+.scholar-site .sch-bar {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.scholar-site .sch-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(20px, 2.4vw, 26px);
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: .2px;
+}
+.scholar-site .sch-nav {
+  display: flex;
+  gap: 28px;
+}
+.scholar-site .sch-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  opacity: .9;
+  transition: opacity .2s;
+}
+.scholar-site .sch-nav a:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---- main wrapper ---- */
+.scholar-site .sch-main {
+  flex: 1;
+  max-width: var(--shell);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 64px) 24px clamp(48px, 6vw, 80px);
+}
+
+/* ---- about: photo + bio ---- */
+.scholar-site .sch-about {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.scholar-site .sch-photo {
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh-card);
+  background: var(--bg-2);
+}
+.scholar-site .sch-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.scholar-site .sch-bio {
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.7;
+  color: var(--t-2);
+}
+.scholar-site .sch-bio p {
+  margin: 0 0 18px;
+}
+.scholar-site .sch-bio strong {
+  color: var(--t-1);
+}
+.scholar-site .sch-bio a {
+  color: var(--purple);
+  font-weight: 600;
+}
+.scholar-site .sch-bio a:hover {
+  color: var(--magenta);
+}
+.scholar-site .sch-meta {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ---- buttons ---- */
+.scholar-site .sch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+.scholar-site .sch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  border-radius: var(--r-sm);
+  background: var(--purple);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  border: 2px solid var(--purple);
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.scholar-site .sch-btn:hover {
+  background: var(--purple-700);
+  border-color: var(--purple-700);
+  transform: translateY(-2px);
+  box-shadow: var(--sh-md);
+}
+.scholar-site .sch-btn-ghost {
+  background: #fff;
+  color: var(--purple);
+}
+.scholar-site .sch-btn-ghost:hover {
+  background: var(--bg-2);
+  color: var(--purple-700);
+}
+
+/* ---- research ---- */
+.scholar-site .sch-research {
+  max-width: 860px;
+}
+.scholar-site .sch-research-head h1 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 44px);
+  color: var(--navy);
+  margin: 0 0 12px;
+}
+.scholar-site .sch-research-head p {
+  font-size: 18px;
+  color: var(--t-2);
+  line-height: 1.6;
+  margin: 0 0 8px;
+}
+.scholar-site .sch-pubs {
+  margin-top: clamp(28px, 3.5vw, 44px);
+}
+.scholar-site .sch-pubs h2 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 28px);
+  color: var(--purple);
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--line);
+}
+.scholar-site .sch-pubs > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.scholar-site .sch-pubs > ul > li {
+  margin: 0 0 20px;
+  padding-left: 18px;
+  position: relative;
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--t-2);
+}
+.scholar-site .sch-pubs > ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--magenta);
+}
+.scholar-site .sch-pub-title {
+  color: var(--t-1);
+  font-weight: 600;
+}
+.scholar-site .sch-coauthors {
+  color: var(--t-3);
+}
+.scholar-site .sch-awards {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0 0 0 4px;
+}
+.scholar-site .sch-awards li {
+  font-size: 14.5px;
+  color: var(--t-3);
+  margin: 4px 0;
+}
+.scholar-site .sch-awards li::before {
+  content: "— ";
+}
+.scholar-site .sch-exp li {
+  padding-left: 18px;
+}
+.scholar-site .sch-pubs .sch-meta {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--t-2);
+}
+.scholar-site .sch-pubs .sch-meta strong {
+  color: var(--t-1);
+}
+
+/* ---- responsive ---- */
+@media (max-width: 760px) {
+  .scholar-site .sch-about {
+    grid-template-columns: 1fr;
+  }
+  .scholar-site .sch-photo {
+    max-width: 360px;
+  }
+  .scholar-site .sch-bar {
+    padding: 16px 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .scholar-site .sch-nav {
+    gap: 20px;
+  }
+}
