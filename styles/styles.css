@@ -27,7 +27,7 @@
   /* text */
   --t-1:#221634;
   --t-2:#52466a;
-  --t-3:#8b7fa6;
+  --t-3:#6a5d8a; /* WCAG AA: darkened from #8b7fa6 (failed 3.07-3.69:1) -> 5.4:1 on --bg, 5.9:1 on #fff */
   --on-dark:#f4eefb;
   --on-dark-2:#c9bbe0;
 
@@ -50,8 +50,8 @@
   --sh-card:0 18px 50px -24px rgba(43,14,76,.30);
 
   /* type */
-  --font-display:"Playfair Display",Georgia,"Times New Roman",serif;
-  --font-sans:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --font-display:var(--font-playfair),Georgia,"Times New Roman",serif;
+  --font-sans:var(--font-jakarta),system-ui,-apple-system,Segoe UI,sans-serif;
 
   --shell:1240px;
   --nav-h:64px;
@@ -65,15 +65,23 @@ body{overflow-x:clip;
   color:var(--t-1);
   background:var(--bg);
   line-height:1.6;
+  font-weight:400;
+  letter-spacing:-.005em;            /* subtle optical tightening for a refined feel */
   -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
   text-rendering:optimizeLegibility;
+  font-feature-settings:"kern" 1,"liga" 1,"calt" 1;
 }
 img{max-width:100%;display:block;height:auto}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit}
-h1,h2,h3,h4{margin:0;line-height:1.08;font-weight:700}
+/* Display headings: Playfair, optically tightened, balanced wrapping */
+h1,h2,h3,h4{margin:0;line-height:1.08;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
 p{margin:0}
 ::selection{background:var(--magenta);color:#fff}
+
+/* Tabular figures for any numeric/stat display so numbers align & feel engineered */
+.tnum,[data-count],.stat-num,.pr-num,.ph-ghost{font-feature-settings:"tnum" 1,"lnum" 1}
 
 /* ---------- layout ---------- */
 .shell{width:min(var(--shell),92vw);margin-inline:auto}
@@ -81,24 +89,24 @@ p{margin:0}
 .center{text-align:center}
 
 .eyebrow{
-  display:inline-flex;align-items:center;gap:9px;
-  font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
   color:var(--magenta);
 }
-.eyebrow::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--grad-soft)}
+.eyebrow::before{content:"";width:24px;height:2px;border-radius:2px;background:var(--grad-soft)}
 .eyebrow.is-light{color:#f4c6e2}
 
 .h-display{font-family:var(--font-display)}
 .section-title{
   font-family:var(--font-display);
-  font-size:clamp(30px,4vw,48px);
-  letter-spacing:-.01em;color:var(--navy);font-weight:800;
-  line-height:1.04;
+  font-size:clamp(36px,5.4vw,68px);
+  letter-spacing:-.028em;color:var(--navy);font-weight:900;
+  line-height:.98;text-wrap:balance;
 }
-.section-title em{font-style:italic;color:var(--magenta)}
+.section-title em{font-style:italic;font-weight:700;color:var(--magenta)}
 .section-lead{
-  margin-top:16px;color:var(--t-2);font-size:clamp(15px,1.4vw,18px);max-width:62ch;
-  text-wrap:pretty;
+  margin-top:18px;color:var(--t-2);font-size:clamp(15px,1.4vw,18px);max-width:60ch;
+  line-height:1.65;text-wrap:pretty;
 }
 .center .section-lead{margin-inline:auto}
 .grad-text{
@@ -152,7 +160,10 @@ p{margin:0}
 .brand{display:flex;align-items:center;gap:13px;flex:none}
 .brand img.crest{height:46px;width:auto}
 .brand .wm{height:31px;width:auto}
-.nav-links{display:flex;align-items:center;gap:4px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+/* Links are grouped on the RIGHT, next to the Contact CTA: margin-left:auto
+   pushes them away from the logo, leaving open space after the brand. The CTA
+   then sits just to their right. No absolute positioning → no overlap. */
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto}
 .nav-links a{
   font-weight:600;font-size:14.5px;color:var(--t-1);padding:9px 13px;border-radius:10px;
   position:relative;transition:color .2s,background .2s;
@@ -160,7 +171,7 @@ p{margin:0}
 .nav-links a:hover{color:var(--purple-700);background:var(--bg-2)}
 .nav-links a.active{color:var(--purple-700)}
 .nav-links a.active::after{content:"";position:absolute;left:13px;right:13px;bottom:3px;height:2px;border-radius:2px;background:var(--grad-soft)}
-.nav-cta{display:flex;align-items:center;gap:10px;margin-left:auto;flex:none}
+.nav-cta{display:flex;align-items:center;gap:10px;flex:none}
 
 /* ---------- floating brochure button ---------- */
 .brochure-fab{
@@ -287,7 +298,7 @@ p{margin:0}
 .footer .f-brand p{color:var(--on-dark-2);font-size:14px;max-width:34ch}
 .footer .f-approve{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
 .footer .f-approve span{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:6px 11px;border-radius:8px;background:rgba(255,255,255,.07);color:#e3d3f1}
-.footer h4{color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.footer h3{color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
 .footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
 .footer ul a{color:var(--on-dark-2);font-size:14px}
 .footer ul a:hover{color:#fff}
@@ -318,14 +329,16 @@ p{margin:0}
 .crumbs{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--on-dark-2);font-weight:600;margin-bottom:20px}
 .crumbs a:hover{color:#fff}
 .crumbs .sep{opacity:.5}
-.page-hero h1{font-family:var(--font-display);font-size:clamp(34px,5vw,60px);font-weight:800;letter-spacing:-.01em;line-height:1.02}
-.page-hero p{margin-top:16px;max-width:64ch;color:var(--on-dark-2);font-size:clamp(15px,1.4vw,18px)}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(42px,6.4vw,82px);font-weight:900;letter-spacing:-.03em;line-height:.96;text-wrap:balance}
+.page-hero p{margin-top:18px;max-width:62ch;color:var(--on-dark-2);font-size:clamp(15px,1.4vw,18px);line-height:1.65}
 
 /* ---------- responsive shared ---------- */
 @media (max-width:1140px){
   .nav-links{display:none}
   .nav-toggle{display:inline-flex}
   .nav-cta .btn:not(.apply-key){display:none}
+  /* links hidden → push the CTA/hamburger to the right edge */
+  .nav-cta{margin-left:auto}
 }
 @media (max-width:600px){
   .nav .shell{gap:12px}

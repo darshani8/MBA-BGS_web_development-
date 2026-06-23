@@ -32,7 +32,7 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4>Quick Links</h4>
+            <h3>Quick Links</h3>
             <ul>
               <li><Link href="/about/">About Us</Link></li>
               <li><Link href="/programs/">Programs</Link></li>
@@ -42,16 +42,16 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4>Resources</h4>
+            <h3>Resources</h3>
             <ul>
               <li><Link href="/blog/">Blog &amp; News</Link></li>
               <li><Link href="/sitemap/">Sitemap</Link></li>
-              <li><a href="#">Download Brochure</a></li>
+              {/* <li><a href="#">Download Brochure</a></li> hidden: non-functional placeholder (no brochure asset yet) */}
               <li><Link href="/contact/">Contact Us</Link></li>
             </ul>
           </div>
           <div>
-            <h4>Reach Us</h4>
+            <h3>Reach Us</h3>
             <ul className="f-contact">
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s-7-5.7-7-11a7 7 0 0114 0c0 5.3-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>

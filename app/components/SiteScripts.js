@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { WEB3FORMS_ACCESS_KEY, WEB3FORMS_ENDPOINT, FORMS_LIVE } from '@/lib/formConfig';
 
 /* Page-content interactions ported from the original site.js. Runs after each
    route's content mounts (keyed on pathname) and cleans up timers/observers on
@@ -194,14 +195,17 @@ export default function SiteScripts() {
       const validatePage = (n) => {
         let ok = true;
         pages[n].querySelectorAll('input[required],select[required]').forEach((f) => {
-          if (
-            !f.value ||
-            (f.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.value)) ||
-            (f.type === 'tel' && f.value.replace(/\D/g, '').length < 10)
-          ) {
+          // Required checkbox (e.g. consent): must be ticked.
+          const invalid =
+            f.type === 'checkbox'
+              ? !f.checked
+              : !f.value ||
+                (f.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.value)) ||
+                (f.type === 'tel' && f.value.replace(/\D/g, '').length < 10);
+          if (invalid) {
             ok = false;
-            f.style.borderColor = 'var(--magenta)';
-          } else {
+            if (f.type !== 'checkbox') f.style.borderColor = 'var(--magenta)';
+          } else if (f.type !== 'checkbox') {
             f.style.borderColor = '';
           }
         });
@@ -215,54 +219,161 @@ export default function SiteScripts() {
       lead.querySelectorAll('[data-prev]').forEach((b) => {
         b.addEventListener('click', () => showPage(cur - 1));
       });
-      lead.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!validatePage(cur)) return;
+      const showLeadSuccess = () => {
         const name = (lead.querySelector('[name=name]') || {}).value || 'there';
         lead.querySelector('.lc-form-inner').style.display = 'none';
         const ok = lead.querySelector('.lc-success');
         ok.style.display = 'block';
         const nm = ok.querySelector('[data-name]');
         if (nm) nm.textContent = name.split(' ')[0];
-        document.getElementById('leadSteps').style.display = 'none';
+        const steps = document.getElementById('leadSteps');
+        if (steps) steps.style.display = 'none';
+      };
+      lead.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (!validatePage(cur)) return;
+
+        // Honeypot: bots fill the hidden field — silently stop.
+        const trap = lead.querySelector('input[name="botcheck"]');
+        if (trap && trap.checked) return;
+
+        const btn = lead.querySelector('button[type=submit]');
+        const orig = btn ? btn.textContent : '';
+        if (btn) {
+          btn.textContent = 'Sending…';
+          btn.disabled = true;
+        }
+
+        // Demo mode (no real key yet): show the thank-you without sending.
+        if (!FORMS_LIVE) {
+          showLeadSuccess();
+          return;
+        }
+
+        try {
+          const data = new FormData(lead);
+          data.set('access_key', WEB3FORMS_ACCESS_KEY);
+          const res = await fetch(WEB3FORMS_ENDPOINT, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: data,
+          });
+          const out = await res.json().catch(() => ({}));
+          if (res.ok && out.success) {
+            showLeadSuccess();
+          } else {
+            if (btn) {
+              btn.textContent = orig;
+              btn.disabled = false;
+            }
+            alert('Sorry, something went wrong. Please try again or email mbainfo@bgscet.ac.in.');
+          }
+        } catch {
+          if (btn) {
+            btn.textContent = orig;
+            btn.disabled = false;
+          }
+          alert('Sorry, something went wrong. Please try again or email mbainfo@bgscet.ac.in.');
+        }
       });
     }
 
-    /* login tabs */
-    const loginTabs = document.querySelectorAll('.login-tabs button');
-    if (loginTabs.length) {
-      const setTab = (key) => {
-        loginTabs.forEach((b) => b.classList.toggle('active', b.getAttribute('data-tab') === key));
-        document
-          .querySelectorAll('.login-panel')
-          .forEach((p) => p.classList.toggle('active', p.getAttribute('data-panel') === key));
-      };
-      loginTabs.forEach((b) => b.addEventListener('click', () => setTab(b.getAttribute('data-tab'))));
-      if (location.hash === '#faculty') setTab('faculty');
-    }
-
-    /* generic login form mock */
+    /* enquiry forms (contact / admissions / programs). Submits to Web3Forms so
+       each entry is emailed to us (and pushed to the linked Google Sheet). The
+       inline .login-msg is shown on success. If no real access key is set yet
+       (FORMS_LIVE === false) it falls back to a harmless demo so the UI still
+       works locally without sending anything. Hidden fields per form: a
+       Web3Forms `access_key`, a `subject`/`from_name`, and a `botcheck`
+       honeypot (real users leave it empty; bots fill it → we drop it). */
     document.querySelectorAll('[data-login]').forEach((f) => {
-      f.addEventListener('submit', function (e) {
+      f.addEventListener('submit', async function (e) {
         e.preventDefault();
         const btn = f.querySelector('button[type=submit]');
         const orig = btn.textContent;
-        btn.textContent = 'Signing in…';
+        const okMsg = f.querySelector('.login-msg');
+        const errMsg = f.querySelector('.form-error');
+        const showOk = () => {
+          if (okMsg) okMsg.style.display = 'flex';
+          if (errMsg) errMsg.style.display = 'none';
+          f.reset();
+          f.querySelectorAll('.field').forEach((x) => x.classList.remove('filled'));
+        };
+        const showErr = () => {
+          if (errMsg) errMsg.style.display = 'flex';
+        };
+
+        // Honeypot: if the hidden field is filled, it's a bot — silently stop.
+        const trap = f.querySelector('input[name="botcheck"]');
+        if (trap && trap.checked) return;
+
+        btn.textContent = 'Sending…';
         btn.disabled = true;
-        setTimeout(() => {
-          const msg = f.querySelector('.login-msg');
-          if (msg) msg.style.display = 'flex';
+
+        // Demo mode (no real key yet): keep the original friendly behaviour.
+        if (!FORMS_LIVE) {
+          setTimeout(() => {
+            showOk();
+            btn.textContent = orig;
+            btn.disabled = false;
+          }, 900);
+          return;
+        }
+
+        try {
+          const data = new FormData(f);
+          data.set('access_key', WEB3FORMS_ACCESS_KEY);
+          const res = await fetch(WEB3FORMS_ENDPOINT, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: data,
+          });
+          const out = await res.json().catch(() => ({}));
+          if (res.ok && out.success) showOk();
+          else showErr();
+        } catch {
+          showErr();
+        } finally {
           btn.textContent = orig;
           btn.disabled = false;
-        }, 1100);
+        }
       });
     });
 
-    /* newsletter subscribe mock */
+    /* newsletter subscribe — sends to Web3Forms (same as the enquiry forms) so
+       subscribers actually reach us. Shows the .news-ok panel via .is-done on
+       success. In demo mode (no real key) it still shows success without
+       sending, so the UI never looks broken locally. */
     document.querySelectorAll('[data-newsletter]').forEach((f) => {
-      f.addEventListener('submit', function (e) {
+      f.addEventListener('submit', async function (e) {
         e.preventDefault();
-        f.classList.add('is-done');
+        const trap = f.querySelector('input[name="botcheck"]');
+        if (trap && trap.checked) return;
+        const btn = f.querySelector('button[type=submit]');
+        if (btn) btn.disabled = true;
+
+        if (!FORMS_LIVE) {
+          f.classList.add('is-done');
+          return;
+        }
+        try {
+          const data = new FormData(f);
+          data.set('access_key', WEB3FORMS_ACCESS_KEY);
+          const res = await fetch(WEB3FORMS_ENDPOINT, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: data,
+          });
+          const out = await res.json().catch(() => ({}));
+          if (res.ok && out.success) {
+            f.classList.add('is-done');
+          } else {
+            if (btn) btn.disabled = false;
+            alert('Sorry, subscription failed. Please try again or email mbainfo@bgscet.ac.in.');
+          }
+        } catch {
+          if (btn) btn.disabled = false;
+          alert('Sorry, subscription failed. Please try again or email mbainfo@bgscet.ac.in.');
+        }
       });
     });
 

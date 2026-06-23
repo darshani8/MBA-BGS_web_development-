@@ -71,21 +71,24 @@
             <span class="lbl">Done</span>
           </div>
           <form id="leadForm" novalidate>
+            <input type="hidden" name="subject" value="New admission lead — BGSCET MBA homepage"/>
+            <input type="hidden" name="from_name" value="BGSCET MBA Website"/>
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true"/>
             <div class="lc-form-inner">
               <!-- page 1 -->
               <div class="lc-page show">
                 <div class="form-grid">
                   <div class="field full">
-                    <input type="text" name="name" placeholder=" " required/>
-                    <label>Full Name</label>
+                    <input id="lead-name" type="text" name="name" placeholder=" " required/>
+                    <label for="lead-name">Full Name</label>
                   </div>
                   <div class="field">
-                    <input type="tel" name="phone" placeholder=" " required/>
-                    <label>Phone</label>
+                    <input id="lead-phone" type="tel" name="phone" placeholder=" " required/>
+                    <label for="lead-phone">Phone</label>
                   </div>
                   <div class="field">
-                    <input type="email" name="email" placeholder=" " required/>
-                    <label>Email</label>
+                    <input id="lead-email" type="email" name="email" placeholder=" " required/>
+                    <label for="lead-email">Email</label>
                   </div>
                 </div>
                 <div class="lc-nav">
@@ -98,21 +101,21 @@
               <div class="lc-page">
                 <div class="form-grid">
                   <div class="field full">
-                    <select name="program" required>
+                    <select id="lead-program" name="program" required>
                       <option value=""></option>
                       <option>General Management (HR / Finance / Marketing)</option>
                       <option>Digital Marketing</option>
                       <option>Logistics &amp; Supply Chain Management</option>
                     </select>
-                    <label>Program of Interest</label>
+                    <label for="lead-program">Program of Interest</label>
                     <span class="sel-arrow"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
                   </div>
                   <div class="field">
-                    <input type="text" name="city" placeholder=" "/>
-                    <label>City</label>
+                    <input id="lead-city" type="text" name="city" placeholder=" "/>
+                    <label for="lead-city">City</label>
                   </div>
                   <div class="field">
-                    <select name="hear">
+                    <select id="lead-hear" name="hear">
                       <option value=""></option>
                       <option>Google Search</option>
                       <option>Instagram / Facebook</option>
@@ -120,11 +123,11 @@
                       <option>Education Fair</option>
                       <option>Newspaper / Ad</option>
                     </select>
-                    <label>How did you hear?</label>
+                    <label for="lead-hear">How did you hear?</label>
                     <span class="sel-arrow"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
                   </div>
                 </div>
-                <label class="lc-consent"><input type="checkbox" checked/> I agree to receive admission updates from BGSCET MBA via call, SMS, email &amp; WhatsApp.</label>
+                <label class="lc-consent"><input type="checkbox" name="consent" value="yes" required/> I agree to receive admission updates from BGSCET MBA via call, SMS, email &amp; WhatsApp.</label>
                 <div class="lc-nav">
                   <button type="button" class="btn btn-ghost" data-prev>Back</button>
                   <button type="submit" class="btn btn-primary">Get Details
@@ -142,7 +145,7 @@
           </form>
           <div class="lc-foot">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 4.4-3 8-7 9-4-1-7-4.6-7-9V7l7-4z"/></svg>
-            Your information is 100% secure &amp; never shared.
+            Your information is used only to respond to you — see our Privacy Policy.
           </div>
         </div>
       </div>
@@ -355,15 +358,15 @@
         <button class="testi-year is-on" type="button" data-grad-year="2025" role="tab" aria-selected="true">2025</button>
       </div>
       <div class="testi-grid" id="testiGrid">
-        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>The institution gave me excellent learning, industry exposure, and unwavering support — helping me build confidence, develop skills, and achieve a successful career start.</p><div class="testi-who"><div class="av"><img src="/assets/testi/rohini.webp" alt="Rohini M"/></div><div><b>Rohini M</b><span>MBA Business Analytics &amp; HR · Alumna</span></div></div></article>
-        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>My time at BGSCET was full of opportunities and transformative experiences that broadened my horizons, challenged my limits, and gave me the confidence to pursue my ambitions with purpose.</p><div class="testi-who"><div class="av"><img src="/assets/testi/vikas.webp" alt="Vikas G"/></div><div><b>Vikas G</b><span>MBA Finance · Alumnus</span></div></div></article>
-        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>My MBA at BGSCET has been a truly enriching experience under the blessings of Poojya Guruji. The guidance of highly qualified faculty and industry experts added immense value to my learning.</p><div class="testi-who"><div class="av"><img src="/assets/testi/tejas.webp" alt="Tejas B N"/></div><div><b>Tejas B N</b><span>MBA Finance</span></div></div></article>
-        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>My MBA journey at BGSCET has been rewarding. Initiatives like PEEP and Reboot, plus interactions with industry leaders and practical exposure, sharpened my skills and prepared me for future opportunities.</p><div class="testi-who"><div class="av"><img src="/assets/testi/chanchal.webp" alt="Chanchal B"/></div><div><b>Chanchal B</b><span>MBA Finance</span></div></div></article>
-        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>The HR specialization at BGSCET balanced theory with real practice. Live projects, mentoring, and personality development gave me the confidence and people skills to step into the workplace ready.</p><div class="testi-who"><div class="av"><img src="/assets/testi/sannav.webp" alt="Sannav P Koli"/></div><div><b>Sannav P Koli</b><span>MBA Human Resource </span></div></div></article>
-        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>BGSCET gave me the perfect blend of academic depth and real-world exposure. The mentorship and hands-on projects shaped me into a confident professional, ready for the corporate world.</p><div class="testi-who"><div class="av"><img src="/assets/testi/lahari.webp" alt="Lahari"/></div><div><b>Lahari S P</b><span>MBA Finance · Alumna</span></div></div></article>
-        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>I joined on an alumni's recommendation and found real growth here — strong learning, culture, and values I can carry forward.</p><div class="testi-who"><div class="av"><img src="/assets/testi/anusha.webp" alt="Anusha H Patel"/></div><div><b>Anusha H Patel</b><span>MBA · Class of 2025</span></div></div></article>
-        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>I came from an engineering background to sharpen my managerial skills — and those expectations are being steadily fulfilled.</p><div class="testi-who"><div class="av"><img src="/assets/testi/anand.webp" alt="Anand Murthy"/></div><div><b>Anand Murthy</b><span>MBA · Class of 2025</span></div></div></article>
-        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>An intensive bootcamp helped me beat stage fear, and a supportive environment gave me the confidence to speak up and find my voice.</p><div class="testi-who"><div class="av"><img src="/assets/testi/hasmitha.webp" alt="Hasmitha R"/></div><div><b>Hasmitha R</b><span>MBA · Class of 2025</span></div></div></article>
+        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>The institution gave me excellent learning, industry exposure, and unwavering support — helping me build confidence, develop skills, and achieve a successful career start.</p><div class="testi-who"><div class="av"><img src="/assets/testi/rohini.webp" alt="Rohini M" loading="lazy" width="48" height="48"/></div><div><b>Rohini M</b><span>MBA Business Analytics &amp; HR · Alumna</span></div></div></article>
+        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>My time at BGSCET was full of opportunities and transformative experiences that broadened my horizons, challenged my limits, and gave me the confidence to pursue my ambitions with purpose.</p><div class="testi-who"><div class="av"><img src="/assets/testi/vikas.webp" alt="Vikas G" loading="lazy" width="48" height="48"/></div><div><b>Vikas G</b><span>MBA Finance · Alumnus</span></div></div></article>
+        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>My MBA at BGSCET has been a truly enriching experience under the blessings of Poojya Guruji. The guidance of highly qualified faculty and industry experts added immense value to my learning.</p><div class="testi-who"><div class="av"><img src="/assets/testi/tejas.webp" alt="Tejas B N" loading="lazy" width="48" height="48"/></div><div><b>Tejas B N</b><span>MBA Finance</span></div></div></article>
+        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>My MBA journey at BGSCET has been rewarding. Initiatives like PEEP and Reboot, plus interactions with industry leaders and practical exposure, sharpened my skills and prepared me for future opportunities.</p><div class="testi-who"><div class="av"><img src="/assets/testi/chanchal.webp" alt="Chanchal B" loading="lazy" width="48" height="48"/></div><div><b>Chanchal B</b><span>MBA Finance</span></div></div></article>
+        <article class="testi-card" data-grad-year="2024"><div class="qm">"</div><p>The HR specialization at BGSCET balanced theory with real practice. Live projects, mentoring, and personality development gave me the confidence and people skills to step into the workplace ready.</p><div class="testi-who"><div class="av"><img src="/assets/testi/sannav.webp" alt="Sannav P Koli" loading="lazy" width="48" height="48"/></div><div><b>Sannav P Koli</b><span>MBA Human Resource </span></div></div></article>
+        <article class="testi-card" data-grad-year="2023"><div class="qm">"</div><p>BGSCET gave me the perfect blend of academic depth and real-world exposure. The mentorship and hands-on projects shaped me into a confident professional, ready for the corporate world.</p><div class="testi-who"><div class="av"><img src="/assets/testi/lahari.webp" alt="Lahari" loading="lazy" width="48" height="48"/></div><div><b>Lahari S P</b><span>MBA Finance · Alumna</span></div></div></article>
+        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>I joined on an alumni's recommendation and found real growth here — strong learning, culture, and values I can carry forward.</p><div class="testi-who"><div class="av"><img src="/assets/testi/anusha.webp" alt="Anusha H Patel" loading="lazy" width="48" height="48"/></div><div><b>Anusha H Patel</b><span>MBA · Class of 2025</span></div></div></article>
+        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>I came from an engineering background to sharpen my managerial skills — and those expectations are being steadily fulfilled.</p><div class="testi-who"><div class="av"><img src="/assets/testi/anand.webp" alt="Anand Murthy" loading="lazy" width="48" height="48"/></div><div><b>Anand Murthy</b><span>MBA · Class of 2025</span></div></div></article>
+        <article class="testi-card" data-grad-year="2025"><div class="qm">"</div><p>An intensive bootcamp helped me beat stage fear, and a supportive environment gave me the confidence to speak up and find my voice.</p><div class="testi-who"><div class="av"><img src="/assets/testi/hasmitha.webp" alt="Hasmitha R" loading="lazy" width="48" height="48"/></div><div><b>Hasmitha R</b><span>MBA · Class of 2025</span></div></div></article>
       </div>
     </div>
   </div>
@@ -430,15 +433,15 @@
     <div class="bp-grid">
       <article class="bp-card reveal">
         <div class="bp-img"><img width="1200" height="658" src="/assets/blog/specializations.webp" alt="MBA Specializations in 2026" loading="lazy"/><span class="bp-cat">Careers</span></div>
-        <div class="bp-body"><div class="bp-meta"><span>May 28, 2026</span>·<span>7 min read</span></div><h3>MBA Specializations in 2026: How to Choose the Right One for Your Career</h3><p>A practical guide to choosing between Finance, Marketing, HR and Analytics based on your strengths.</p><a href="/blog-specializations/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
+        <div class="bp-body"><div class="bp-meta"><span>May 28, 2026</span>·<span>7 min read</span></div><h3>MBA Specializations in 2026: How to Choose the Right One for Your Career</h3><p>A practical guide to choosing between Finance, Marketing, HR and Analytics based on your strengths.</p><a href="/blog/mba-specializations/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
       </article>
       <article class="bp-card reveal d1">
         <div class="bp-img"><img width="1200" height="668" src="/assets/blog/skills.webp" alt="5 Skills Recruiters Look For in MBA Graduates" loading="lazy"/><span class="bp-cat">Placements</span></div>
-        <div class="bp-body"><div class="bp-meta"><span>May 19, 2026</span>·<span>6 min read</span></div><h3>5 Skills Recruiters Look For in MBA Graduates in 2026</h3><p>The competencies that consistently land our students offers — and how we build them.</p><a href="/blog-skills/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
+        <div class="bp-body"><div class="bp-meta"><span>May 19, 2026</span>·<span>6 min read</span></div><h3>5 Skills Recruiters Look For in MBA Graduates in 2026</h3><p>The competencies that consistently land our students offers — and how we build them.</p><a href="/blog/recruiter-skills/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
       </article>
       <article class="bp-card reveal d2">
-        <div class="bp-img"><img width="1200" height="660" src="/assets/blog/bplan.webp" alt="Inside Our Annual B-Plan Challenge" loading="lazy"/><span class="bp-cat">Campus</span></div>
-        <div class="bp-body"><div class="bp-meta"><span>May 12, 2026</span>·<span>5 min read</span></div><h3>Inside the BGSCET B-Plan Challenge: Where Ideas Become Startups</h3><p>How students turned classroom ideas into fundable ventures at this year's incubation showcase.</p><a href="/blog-bplan/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
+        <div class="bp-img"><img width="1200" height="675" src="/assets/blog/swadothsav.jpg" alt="BGSCET MBA students hosting Swadothsav, a 1,500-guest student-run food festival" loading="lazy"/><span class="bp-cat">Campus</span></div>
+        <div class="bp-body"><div class="bp-meta"><span>Jun 09, 2026</span>·<span>7 min read</span></div><h3>Cooking Up Real-World Skills: How Students Turned Swadothsav into a Masterclass in Management</h3><p>Hosting a 1,500-guest food festival end-to-end taught more about teamwork, sustainability, and crisis management than any classroom could.</p><a href="/blog/swadothsav/" class="bp-link">Read article <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a></div>
       </article>
     </div>
     <div class="center" style="margin-top:36px"><a href="/blog/" class="btn btn-ghost btn-lg">View all articles
@@ -464,30 +467,17 @@
 </section>
 
 <!-- NEWSLETTER -->
-<section class="section news">
+<section class="section news news--solo">
   <div class="shell">
     <div>
       <span class="eyebrow is-light reveal">Stay Connected</span>
       <h2 class="reveal d1">Beyond the <em>Classroom</em></h2>
-      <p class="news-lead reveal d2">Subscribe to our newsletter for career guidance, industry trends, alumni stories and campus happenings — delivered to your inbox every month.</p>
+      <p class="news-lead reveal d2">Career guidance, industry trends, alumni stories and campus happenings — explore what life beyond the classroom looks like at BGSCET MBA. For updates, reach us at <a href="mailto:mbainfo@bgscet.ac.in">mbainfo@bgscet.ac.in</a>.</p>
       <ul class="news-perks reveal d2">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Career &amp; placement insights</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Industry &amp; B-school trends</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Events &amp; campus stories</li>
       </ul>
-    </div>
-    <div class="news-card reveal d1">
-      <form class="news-form" data-newsletter novalidate>
-        <div class="nf-field"><input type="text" name="name" placeholder="Your name" required/></div>
-        <div class="nf-field"><input type="email" name="email" placeholder="Email address" required/></div>
-        <button type="submit" class="btn btn-primary btn-lg">Subscribe<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
-        <p class="news-fine">No spam, ever. Unsubscribe anytime. Your information is 100% secure and never shared.</p>
-      </form>
-      <div class="news-ok">
-        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-        <h3>You're subscribed!</h3>
-        <p>Thank you for joining the BGSCET MBA community. Look out for our next issue in your inbox.</p>
-      </div>
     </div>
   </div>
 </section>

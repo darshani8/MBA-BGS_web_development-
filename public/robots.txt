@@ -1,0 +1,6 @@
+# robots.txt — BGSCET MBA
+# Public marketing site; everything is crawlable. There are no private areas.
+User-agent: *
+Allow: /
+
+Sitemap: https://mba.bgscet.ac.in/sitemap.xml

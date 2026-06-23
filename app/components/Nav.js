@@ -74,10 +74,6 @@ export default function Nav() {
             <Link href="/blog/" className={active('/blog') ? 'active' : undefined}>Blog</Link>
           </nav>
           <div className="nav-cta">
-            <Link href="/login/" className="btn btn-ghost btn-sm">
-              Login
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-            </Link>
             <Link href="/contact/" className="btn btn-primary btn-sm apply-key">
               Contact Us
               <svg className="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" /></svg>
@@ -106,7 +102,6 @@ export default function Nav() {
           <Link href="/journey/" onClick={() => setOpen(false)}>The Journey</Link>
           <Link href="/blog/" onClick={() => setOpen(false)}>Blog</Link>
           <div className="d-cta">
-            <Link href="/login/" className="btn btn-ghost" onClick={() => setOpen(false)}>Login</Link>
             <Link href="/contact/" className="btn btn-primary" onClick={() => setOpen(false)}>Contact Us</Link>
           </div>
         </div>
