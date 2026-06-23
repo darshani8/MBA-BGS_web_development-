@@ -1,0 +1,23 @@
+# AWS Amplify build settings for this static Next.js site (output: 'export').
+# Amplify runs these phases on every push to the connected branch, then serves
+# the contents of `out/` from its global CDN. See docs/AWS-HOSTING.md.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Clean, reproducible install from package-lock.json.
+        - npm ci
+    build:
+      commands:
+        # Produces the fully static site in ./out (next.config.mjs: output:'export').
+        # Leave NEXT_PUBLIC_BASE_PATH empty for a root domain (the default).
+        - npm run build
+  artifacts:
+    # The exported static site lives in out/ — that folder IS the website.
+    baseDirectory: out
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
